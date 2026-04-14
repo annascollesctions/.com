@@ -635,6 +635,9 @@
         // Image fallback URL
         const fallbackImg = 'https://placehold.co/600x800?text=Item+Image';
 
+        // WhatsApp Settings
+        const WHATSAPP_NUMBER = '16194038183';
+
         // Product Data with verified working images
         const products = {
             bestSellers: [
@@ -810,17 +813,15 @@
 
         // Ordering Logic
         function handleOrder(name, price, platform) {
-            const msg = `Hello Annans Products! I am interested in purchasing:
-
-*${name}*
-Price: *${price}*
-
-Is this available?`;
-            const encodedMsg = encodeURIComponent(msg);
             if (platform === 'WA') {
-                window.open(`https://wa.me/2348123456789?text=${encodedMsg}`, '_blank');
+                const msg = `Hi, I want to purchase the ${name}. Is it still available?`;
+                const encodedMsg = encodeURIComponent(msg);
+                window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMsg}`, '_blank');
             } else {
-                window.open(`https://t.me/AnnansProducts?text=${encodedMsg}`, '_blank');
+                // Keep existing Telegram logic as requested
+                const tgMsg = `Hello Annans Products! I am interested in purchasing:\n\n*${name}*\nPrice: *${price}*\n\nIs this available?`;
+                const encodedTgMsg = encodeURIComponent(tgMsg);
+                window.open(`https://t.me/AnnansProducts?text=${encodedTgMsg}`, '_blank');
             }
         }
 
@@ -889,11 +890,10 @@ Is this available?`;
             const name = document.getElementById('custName').value;
             const platform = document.getElementById('platform').value;
             const msg = document.getElementById('custMsg').value;
-            const fullMsg = `Inquiry from ${name}:
-${msg}`;
+            const fullMsg = `Inquiry from ${name}:\n${msg}`;
             const encoded = encodeURIComponent(fullMsg);
             if (platform === 'WhatsApp') {
-                window.open(`https://wa.me/2348123456789?text=${encoded}`, '_blank');
+                window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`, '_blank');
             } else {
                 window.open(`https://t.me/AnnansProducts?text=${encoded}`, '_blank');
             }

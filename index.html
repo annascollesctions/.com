@@ -499,12 +499,12 @@
                 <span></span>
             </div>
             <div class="nav-links" id="navLinks">
-                <a href="#home" class="active">Home</a>
-                <a href="#featured">Best Sellers</a>
-                <a href="#luxury">Luxury</a>
-                <a href="#fashion">Shop</a>
-                <a href="#gifts">Gifts</a>
-                <a href="#contact">Contact</a>
+                <a href="#home" class="active" onclick="closeMobileMenu()">Home</a>
+                <a href="#featured" onclick="closeMobileMenu()">Best Sellers</a>
+                <a href="#luxury" onclick="closeMobileMenu()">Luxury</a>
+                <a href="#fashion" onclick="closeMobileMenu()">Shop</a>
+                <a href="#gifts" onclick="closeMobileMenu()">Gifts</a>
+                <a href="#contact" onclick="closeMobileMenu()">Contact</a>
             </div>
         </div>
     </nav>
@@ -847,6 +847,12 @@ Is this available?`;
             navLinks.classList.toggle('active');
         }
 
+        // Close mobile menu when a nav link is clicked
+        function closeMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.remove('active');
+        }
+
         // Active Navigation Link
         function updateActiveNav() {
             const sections = document.querySelectorAll('section[id], header[id]');
@@ -855,8 +861,7 @@ Is this available?`;
             let current = '';
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (scrollY >= (sectionTop - 200)) {
+                if (window.scrollY >= (sectionTop - 200)) {
                     current = section.getAttribute('id');
                 }
             });
@@ -908,6 +913,31 @@ ${msg}`;
             setTimeout(() => {
                 document.querySelectorAll('.product-card').forEach(card => observer.observe(card));
             }, 600);
+
+            // Correctly handle navigation links for smooth scrolling and menu closing
+            document.querySelectorAll('.nav-links a, .nav-logo').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId && targetId.startsWith('#')) {
+                        e.preventDefault();
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            // Close menu first
+                            closeMobileMenu();
+                            
+                            // Scroll to target
+                            const navHeight = document.getElementById('navbar').offsetHeight;
+                            const elementPosition = targetElement.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset - navHeight;
+
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
         };
     </script>
 </body>
